@@ -1,59 +1,91 @@
+# Cross-Chain NFT Minting Demo
 
-![tw-banner](https://github.com/thirdweb-example/next-starter/assets/57885104/20c8ce3b-4e55-4f10-ae03-2fe4743a5ee8)
+A demonstration of cross-chain NFT minting using thirdweb Engine, where users can send ETH on Base Sepolia and receive an NFT on Optimism Sepolia.
 
-# thirdweb-next-starter
+## Overview
 
-Starter template to build an onchain react native app with [thirdweb](https://thirdweb.com/) and [next](https://nextjs.org/).
+This application showcases a seamless cross-chain minting experience where users can:
+1. Connect their wallet on Base Sepolia
+2. Send 0.001 Base Sepolia ETH
+3. Automatically receive an NFT on Optimism Sepolia
+4. Track the entire process through real-time notifications
 
-## Installation
+## Features
 
-Install the template using [thirdweb create](https://portal.thirdweb.com/cli/create)
+- 🦊 Custom thirdweb [Connect Button](https://portal.thirdweb.com/react/v5/components/ConnectButton)
+- ⛓️ Cross-chain functionality (Base Sepolia → Optimism Sepolia)
+- 🎨 Clean, responsive UI using Tailwind CSS
+- 📱 Mobile-friendly design
+- 🔔 Real-time transaction status updates
+- 🔍 Direct block explorer links for minted NFTs
+
+## Technical Stack
+
+- **Frontend**: Next.js 14
+- **Send Transaction**: thirdweb SDK
+- **thirdweb Conect** [Custom Connect Button](https://portal.thirdweb.com/react/v5/components/ConnectButton)
+- **Mint NFT**: [thirdweb Engine](https://thirdweb.com/engine)
+- **Styling**: Tailwind CSS
+- **UI Components**: Custom shadcn/ui components
+- **Notifications**: React-Toastify
+
+## Prerequisites
+
+- Node.js 18.x or higher
+- A wallet with Base Sepolia ETH (for testing)
+
+## Getting Started
+
+1. Clone the repository:
 
 ```bash
-  npx thirdweb create app --next
+git clone <repository-url>
 ```
 
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file:
-
-`CLIENT_ID`
-
-To learn how to create a client ID, refer to the [client documentation](https://portal.thirdweb.com/typescript/v5/client). 
-
-## Run locally
-
-Install dependencies
-
+2. Install dependencies:
 ```bash
-yarn
+npm install
+# or
+yarn install
 ```
 
-Start development server
+3. Create a `.env.local` file with required environment variables:
+```env
+# Add any required environment variables here
+```
 
+4. Run the development server:
 ```bash
+npm run dev
+# or
 yarn dev
 ```
 
-Create a production build
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-```bash
-yarn build
-```
+## Usage
 
-Preview the production build
+1. Click "Connect" to connect your wallet
+2. Ensure you're on Base Sepolia network
+3. Click "Mint" to initiate the cross-chain minting process
+4. Approve the transaction in your wallet
+5. Wait for confirmation and receive your NFT on Optimism Sepolia
+6. Click the provided block explorer link to view your NFT
 
-```bash
-yarn start
-```
+## Network Requirements
 
-## Resources
+- **Payment Network**: Base Sepolia (Chain ID: 84532)
+- **NFT Network**: Optimism Sepolia
 
-- [Documentation](https://portal.thirdweb.com/typescript/v5)
-- [Templates](https://thirdweb.com/templates)
-- [YouTube](https://www.youtube.com/c/thirdweb)
-- [Blog](https://blog.thirdweb.com)
+## Contributing
 
-## Need help?
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-For help or feedback, please [visit our support site](https://thirdweb.com/support)
+## License
+
+[MIT License](LICENSE)
+
+## Acknowledgments
+
+- Built with [thirdweb](https://thirdweb.com/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
