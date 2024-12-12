@@ -43,7 +43,10 @@ export default function Home() {
       detailsModal.open({ client });
     } else {
       // If no account is connected, connect
-      const wallet = await connect({ client });
+      const wallet = await connect({
+        client,
+        chain,
+      });
       console.log("connected to", wallet);
     }
   }
@@ -80,7 +83,7 @@ export default function Home() {
   return (
     <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
       <div className="py-20">
-        <div className="flex justify-center mb-20">
+        {/* <div className="flex justify-center mb-20">
           <ConnectButton
             client={client}
             chain={chain}
@@ -90,9 +93,9 @@ export default function Home() {
             }}
             theme={theme}
           />
-        </div>
+        </div> */}
 
-        {/* <div className="flex justify-center mb-20">
+        <div className="flex justify-center mb-20">
           {activeAccount ? (
             <Button
               variant="outline"
@@ -116,7 +119,7 @@ export default function Home() {
               Connect
             </Button>
           )}
-        </div> */}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="flex justify-center">
