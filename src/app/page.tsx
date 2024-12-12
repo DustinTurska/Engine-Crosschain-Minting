@@ -120,7 +120,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="flex justify-center">
-            <Image src={nftImage} alt="NFT" width={450} height={450} />
+            <Image src={nftImage} alt="NFT" width={300} height={300} />
           </div>
 
           <div className="flex flex-col items-center gap-4">
@@ -153,8 +153,24 @@ export default function Home() {
                         transaction,
                       });
 
+                      // First toast
+                      toast.success("Payment Sent to Engine Backend", {
+                        autoClose: 3000  // 3 seconds
+                      });
+
+                      // Wait 2 seconds before showing the minting toast
+                      await new Promise(resolve => setTimeout(resolve, 2000));
+
+                      // Show minting toast and store its ID
+                      const mintingToastId = toast.info("Minting NFT on OP Sepolia...", {
+                        autoClose: false  // Stay open until we dismiss it
+                      });
+
                       const response = await handleOnSuccess(transactionHash);
                       if (response?.blockExplorerUrl) {
+                        // Dismiss the minting toast
+                        toast.dismiss(mintingToastId);
+                        
                         toast.success(
                           <div>
                             NFT Minted! View on{" "}
@@ -166,7 +182,10 @@ export default function Home() {
                             >
                               Block Explorer
                             </a>
-                          </div>
+                          </div>,
+                          {
+                            autoClose: 8000  // 8 seconds for the final toast with the link
+                          }
                         );
                       }
                     } catch (error) {
