@@ -804,6 +804,16 @@
   dependencies:
     "@radix-ui/react-primitive" "2.0.0"
 
+"@radix-ui/react-collection@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-collection/-/react-collection-1.1.0.tgz#f18af78e46454a2360d103c2251773028b7724ed"
+  integrity sha512-GZsZslMJEyo1VKm5L1ZJY8tGDxZNPAoUeQUIbKeJfoi7Q4kmig5AsgLMYYuyYbfjd8fBmFORAIwYAkXMnXZgZw==
+  dependencies:
+    "@radix-ui/react-compose-refs" "1.1.0"
+    "@radix-ui/react-context" "1.1.0"
+    "@radix-ui/react-primitive" "2.0.0"
+    "@radix-ui/react-slot" "1.1.0"
+
 "@radix-ui/react-compose-refs@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-compose-refs/-/react-compose-refs-1.1.0.tgz#656432461fc8283d7b591dcf0d79152fae9ecc74"
@@ -915,12 +925,30 @@
   dependencies:
     "@radix-ui/react-slot" "1.1.0"
 
-"@radix-ui/react-slot@1.1.0":
+"@radix-ui/react-slot@1.1.0", "@radix-ui/react-slot@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-slot/-/react-slot-1.1.0.tgz#7c5e48c36ef5496d97b08f1357bb26ed7c714b84"
   integrity sha512-FUCf5XMfmW4dtYl69pdS4DbxKy8nj4M7SafBgPllysxmdachynNflAdp/gCsnYWNDnge6tI9onzMp5ARYc1KNw==
   dependencies:
     "@radix-ui/react-compose-refs" "1.1.0"
+
+"@radix-ui/react-toast@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-toast/-/react-toast-1.2.2.tgz#fdd8ed0b80f47d6631dfd90278fee6debc06bf33"
+  integrity sha512-Z6pqSzmAP/bFJoqMAston4eSNa+ud44NSZTiZUmUen+IOZ5nBY8kzuU5WDBVyFXPtcW6yUalOHsxM/BP6Sv8ww==
+  dependencies:
+    "@radix-ui/primitive" "1.1.0"
+    "@radix-ui/react-collection" "1.1.0"
+    "@radix-ui/react-compose-refs" "1.1.0"
+    "@radix-ui/react-context" "1.1.1"
+    "@radix-ui/react-dismissable-layer" "1.1.1"
+    "@radix-ui/react-portal" "1.1.2"
+    "@radix-ui/react-presence" "1.1.1"
+    "@radix-ui/react-primitive" "2.0.0"
+    "@radix-ui/react-use-callback-ref" "1.1.0"
+    "@radix-ui/react-use-controllable-state" "1.1.0"
+    "@radix-ui/react-use-layout-effect" "1.1.0"
+    "@radix-ui/react-visually-hidden" "1.1.0"
 
 "@radix-ui/react-tooltip@1.1.4":
   version "1.1.4"
@@ -1901,6 +1929,13 @@ citty@^0.1.5, citty@^0.1.6:
   dependencies:
     consola "^3.2.3"
 
+class-variance-authority@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/class-variance-authority/-/class-variance-authority-0.7.1.tgz#4008a798a0e4553a781a57ac5177c9fb5d043787"
+  integrity sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==
+  dependencies:
+    clsx "^2.1.1"
+
 client-only@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/client-only/-/client-only-0.0.1.tgz#38bba5d403c41ab150bff64a95c85013cf73bca1"
@@ -1928,6 +1963,11 @@ clsx@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
   integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
+
+clsx@^2.1.0, clsx@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.1.1.tgz#eed397c9fd8bd882bfb18deab7102049a2f32999"
+  integrity sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==
 
 color-convert@^2.0.1:
   version "2.0.1"
@@ -2154,6 +2194,11 @@ doctrine@^3.0.0:
   integrity sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
   dependencies:
     esutils "^2.0.2"
+
+dotenv@^16.4.7:
+  version "16.4.7"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.7.tgz#0e20c5b82950140aa99be360a8a5f52335f53c26"
+  integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
 
 dunder-proto@^1.0.0:
   version "1.0.0"
@@ -3541,6 +3586,11 @@ lru-cache@^10.2.0, lru-cache@^10.4.3:
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.4.3.tgz#410fc8a17b70e598013df257c2446b7f3383f119"
   integrity sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==
 
+lucide-react@^0.468.0:
+  version "0.468.0"
+  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.468.0.tgz#830c1bfd905575ddd23b832baa420c87db166910"
+  integrity sha512-6koYRhnM2N0GGZIdXzSeiNwguv1gt/FAjZOiPl76roBi3xKEXa4WmfpxgQwTTL4KipXjefrnf3oV4IsYhi4JFA==
+
 math-intrinsics@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/math-intrinsics/-/math-intrinsics-1.0.0.tgz#4e04bf87c85aa51e90d078dac2252b4eb5260817"
@@ -4220,6 +4270,13 @@ react-style-singleton@^2.2.1:
     invariant "^2.2.4"
     tslib "^2.0.0"
 
+react-toastify@^10.0.6:
+  version "10.0.6"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-10.0.6.tgz#19c364b1150f495522c738d592d1dcc93879ade1"
+  integrity sha512-yYjp+omCDf9lhZcrZHKbSq7YMuK0zcYkDFTzfRFgTXkTFHZ1ToxwAonzA4JI5CxA91JpjFLmwEsZEgfYfOqI1A==
+  dependencies:
+    clsx "^2.1.0"
+
 react@^18.3:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"
@@ -4707,6 +4764,16 @@ system-architecture@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/system-architecture/-/system-architecture-0.1.0.tgz#71012b3ac141427d97c67c56bc7921af6bff122d"
   integrity sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==
+
+tailwind-merge@^2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-2.5.5.tgz#98167859b856a2a6b8d2baf038ee171b9d814e39"
+  integrity sha512-0LXunzzAZzo0tEPxV3I297ffKZPlKDrjj7NXphC8V5ak9yHC5zRmxnOe2m/Rd/7ivsOMJe3JZ2JVocoDdQTRBA==
+
+tailwindcss-animate@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz#318b692c4c42676cc9e67b19b78775742388bef4"
+  integrity sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==
 
 tailwindcss@^3.3.0:
   version "3.4.16"

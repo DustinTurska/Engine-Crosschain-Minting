@@ -1,100 +1,190 @@
 "use client";
 
 import Image from "next/image";
-import { ConnectButton } from "thirdweb/react";
-import thirdwebIcon from "@public/thirdweb.svg";
+import {
+  Blobbie,
+  ConnectButton,
+  useActiveAccount,
+  useConnectModal,
+  useWalletDetailsModal,
+} from "thirdweb/react";
 import { client } from "./client";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CardHeader } from "@/components/ui/card";
+import { CardTitle } from "@/components/ui/card";
+import { prepareTransaction, sendTransaction } from "thirdweb/transaction";
+import { toWei } from "thirdweb/utils";
+import { defineChain } from "thirdweb/chains";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
+const chain = defineChain({
+  id: 84532,
+});
+
+const theme = "dark";
+
+const nftImage =
+  "https://ipfs.io/ipfs/QmciR3WLJsf2BgzTSjbG5zCxsrEQ8PqsHK7JWGWsDSNo46/nft.png";
 
 export default function Home() {
+  const activeAccount = useActiveAccount();
+  const [isLoading, setIsLoading] = useState(false);
+  const [txUrl, setTxUrl] = useState<string | null>(null);
+  const { connect, isConnecting } = useConnectModal();
+  const detailsModal = useWalletDetailsModal();
+
+  async function handleConnect() {
+    if (activeAccount) {
+      // If an account is already connected, open the wallet details modal
+      detailsModal.open({ client });
+    } else {
+      // If no account is connected, connect
+      const wallet = await connect({ client });
+      console.log("connected to", wallet);
+    }
+  }
+
+  const handleOnSuccess = async (transactionHash: string) => {
+    if (!activeAccount?.address) return;
+
+    try {
+      const response = await fetch("/api/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          receiver: activeAccount.address,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+
+      if (data.data.blockExplorerUrl) {
+        setTxUrl(data.data.blockExplorerUrl);
+        return data.data;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
+    }
+  };
+
   return (
     <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
       <div className="py-20">
-        <Header />
-
-        <div className="flex justify-center mb-20">
+        {/* <div className="flex justify-center mb-20">
           <ConnectButton
             client={client}
+            chain={chain}
             appMetadata={{
               name: "Example App",
               url: "https://example.com",
             }}
+            theme={theme}
           />
+        </div> */}
+
+        <div className="flex justify-center mb-20">
+          {activeAccount ? (
+            <Button
+              variant="outline"
+              onClick={handleConnect}
+              className="flex items-center gap-2"
+            >
+              <div className="rounded-full overflow-hidden">
+                <Blobbie address={activeAccount.address} size={24} />
+              </div>
+              <span>
+                {activeAccount.address.slice(0, 6)}...
+                {activeAccount.address.slice(-4)}
+              </span>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              onClick={handleConnect}
+              className="flex items-center gap-2"
+            >
+              Connect
+            </Button>
+          )}
         </div>
 
-        <ThirdwebResources />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="flex justify-center">
+            <Image src={nftImage} alt="NFT" width={450} height={450} />
+          </div>
+
+          <div className="flex flex-col items-center gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Cross-Chain Minting</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>
+                  Send 0.001 Base Sepolia ETH to Engine backend wallet. Receive
+                  an NFT on Optimism Sepolia.
+                </p>
+              </CardContent>
+              <CardContent>
+                <Button
+                  variant="outline"
+                  disabled={!activeAccount || isLoading}
+                  onClick={async () => {
+                    try {
+                      setIsLoading(true);
+                      const transaction = prepareTransaction({
+                        to: "0x62ead6657dccA283Fb9f8111C820f4367CBAf2cF",
+                        chain: chain,
+                        value: toWei("0.001"),
+                        client: client,
+                      });
+
+                      const { transactionHash } = await sendTransaction({
+                        account: activeAccount!,
+                        transaction,
+                      });
+
+                      const response = await handleOnSuccess(transactionHash);
+                      if (response?.blockExplorerUrl) {
+                        toast.success(
+                          <div>
+                            NFT Minted! View on{" "}
+                            <a
+                              href={response.blockExplorerUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline"
+                            >
+                              Block Explorer
+                            </a>
+                          </div>
+                        );
+                      }
+                    } catch (error) {
+                      toast.error("Failed to mint NFT");
+                      console.error(error);
+                    } finally {
+                      setIsLoading(false);
+                    }
+                  }}
+                >
+                  {isLoading ? "Minting..." : "Mint"}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
+      <ToastContainer position="bottom-right" />
     </main>
-  );
-}
-
-function Header() {
-  return (
-    <header className="flex flex-col items-center mb-20 md:mb-20">
-      <Image
-        src={thirdwebIcon}
-        alt=""
-        className="size-[150px] md:size-[150px]"
-        style={{
-          filter: "drop-shadow(0px 0px 24px #a726a9a8)",
-        }}
-      />
-
-      <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
-        thirdweb SDK
-        <span className="text-zinc-300 inline-block mx-1"> + </span>
-        <span className="inline-block -skew-x-6 text-blue-500"> Next.js </span>
-      </h1>
-
-      <p className="text-zinc-300 text-base">
-        Read the{" "}
-        <code className="bg-zinc-800 text-zinc-300 px-2 rounded py-1 text-sm mx-1">
-          README.md
-        </code>{" "}
-        file to get started.
-      </p>
-    </header>
-  );
-}
-
-function ThirdwebResources() {
-  return (
-    <div className="grid gap-4 lg:grid-cols-3 justify-center">
-      <ArticleCard
-        title="thirdweb SDK Docs"
-        href="https://portal.thirdweb.com/typescript/v5"
-        description="thirdweb TypeScript SDK documentation"
-      />
-
-      <ArticleCard
-        title="Components and Hooks"
-        href="https://portal.thirdweb.com/typescript/v5/react"
-        description="Learn about the thirdweb React components and hooks in thirdweb SDK"
-      />
-
-      <ArticleCard
-        title="thirdweb Dashboard"
-        href="https://thirdweb.com/dashboard"
-        description="Deploy, configure, and manage your smart contracts from the dashboard."
-      />
-    </div>
-  );
-}
-
-function ArticleCard(props: {
-  title: string;
-  href: string;
-  description: string;
-}) {
-  return (
-    <a
-      href={props.href + "?utm_source=next-template"}
-      target="_blank"
-      className="flex flex-col border border-zinc-800 p-4 rounded-lg hover:bg-zinc-900 transition-colors hover:border-zinc-700"
-    >
-      <article>
-        <h2 className="text-lg font-semibold mb-2">{props.title}</h2>
-        <p className="text-sm text-zinc-400">{props.description}</p>
-      </article>
-    </a>
   );
 }
