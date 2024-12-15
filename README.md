@@ -56,6 +56,22 @@ This application showcases a seamless cross-chain minting experience where users
 - **UI Components**: Custom shadcn/ui components
 - **Notifications**: React-Toastify
 
+## Smart Contract
+
+This demo uses a [thirdweb Prebuilt Edition (ERC-1155)](https://thirdweb.com/thirdweb.eth/TokenERC1155/5.0.2) contract deployed on Optimism Sepolia:
+- **Contract Address**: `0xd3349CE88512A7783c1a3B425A64C84ac5d33f47`
+- **Network**: Optimism Sepolia Testnet
+- **Contract Type**: Edition (ERC-1155)
+- **Version**: v5.0.2
+- **View on Explorer**: [OpScout](https://thirdweb.com/op-sepolia-testnet/0xd3349CE88512A7783c1a3B425A64C84ac5d33f47)
+
+The Edition contract is a prebuilt thirdweb contract that allows for:
+- Creating multiple NFTs (tokens) under a single contract
+- Each token can have multiple copies (editions)
+- Full ERC-1155 standard compliance
+- Built-in minting functionality
+- Ensure the Engine Backend Wallet has the `MINTER_ROLE` on the contract, which can be set in the permissions tab of your contracts thirdweb dashboard.
+
 ## Prerequisites
 
 - Node.js 18.x or higher

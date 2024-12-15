@@ -15,17 +15,17 @@ export async function POST(request: NextRequest) {
     const receiver = body.receiver;
     const metadataWithSupply = {
         "metadata": {
-          "name": "My NFT",
-          "description": "My NFT description",
+          "name": "Cross-Chain NFT Minting Demo",
+          "description": "A demonstration of cross-chain NFT minting using thirdweb Engine, where users can send ETH on any supported chain and receive an NFT on Optimism Sepolia.",
           "image": "ipfs://QmciR3WLJsf2BgzTSjbG5zCxsrEQ8PqsHK7JWGWsDSNo46/nft.png"
         },
-        "supply": "100"
+        "supply": "1"
       };
 
     const res = await engine.erc1155.mintTo(
       "11155420",
-      "0xd3349CE88512A7783c1a3B425A64C84ac5d33f47",
-      "0x84ae6e34E420c1F12290D80041475c1d85F3F26C",
+      "0xd3349CE88512A7783c1a3B425A64C84ac5d33f47", // Contract address
+      "0x84ae6e34E420c1F12290D80041475c1d85F3F26C", // Engine Backend Wallet NOTE: Engine backend wallet needs to have MINTER_ROLE on the contract
       {
         receiver,
         metadataWithSupply,
