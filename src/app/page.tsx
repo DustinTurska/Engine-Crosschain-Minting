@@ -49,7 +49,7 @@ const chains = {
   })
 };
 
-const theme = "dark";
+const theme = "dark";1
 
 const nftImage =
   "https://ipfs.io/ipfs/QmciR3WLJsf2BgzTSjbG5zCxsrEQ8PqsHK7JWGWsDSNo46/nft.png";
