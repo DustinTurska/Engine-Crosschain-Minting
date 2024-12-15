@@ -63,12 +63,38 @@ export default function Home() {
   const [selectedChain, setSelectedChain] = useState(chains.baseSepolia);
   const networkSwitcher = useNetworkSwitcherModal();
 
-  const { data, isError } = useWalletBalance({
-    chain: selectedChain,
+  // Create separate hook calls for each chain
+  const baseSepoliaBalance = useWalletBalance({
+    chain: chains.baseSepolia,
     address: activeAccount?.address,
     client,
   });
-  console.log("balance", data?.displayValue, data?.symbol);
+
+  const optimismSepoliaBalance = useWalletBalance({
+    chain: chains.optimismSepolia,
+    address: activeAccount?.address,
+    client,
+  });
+
+  const soneiumMinatoBalance = useWalletBalance({
+    chain: chains.soneiumMinato,
+    address: activeAccount?.address,
+    client,
+  });
+
+  const abstractTestnetBalance = useWalletBalance({
+    chain: chains.abstractTestnet,
+    address: activeAccount?.address,
+    client,
+  });
+
+  // Combine the balances with their respective chains
+  const chainBalances = [
+    { chain: chains.baseSepolia, balance: baseSepoliaBalance },
+    { chain: chains.optimismSepolia, balance: optimismSepoliaBalance },
+    { chain: chains.soneiumMinato, balance: soneiumMinatoBalance },
+    { chain: chains.abstractTestnet, balance: abstractTestnetBalance },
+  ];
 
   async function handleConnect() {
     if (activeAccount) {
@@ -195,28 +221,20 @@ export default function Home() {
                     <SelectValue placeholder="Select Chain" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(chains).map(([key, chain]) => {
-                      const { data: balance } = useWalletBalance({
-                        chain: chain,
-                        address: activeAccount?.address,
-                        client,
-                      });
-                      
-                      return (
-                        <SelectItem 
-                          key={chain.id} 
-                          value={chain.id.toString()}
-                          disabled={!balance || balance.displayValue === "0"}
-                        >
-                          <div className="flex justify-between w-full items-center">
-                            <span>{chain.name}</span>
-                            <span className="text-gray-500 ml-auto pl-4">
-                              {balance ? `${balance.displayValue} ${balance.symbol}` : '0'}
-                            </span>
-                          </div>
-                        </SelectItem>
-                      );
-                    })}
+                    {chainBalances.map(({ chain, balance }) => (
+                      <SelectItem 
+                        key={chain.id} 
+                        value={chain.id.toString()}
+                        disabled={!balance.data || balance.data.displayValue === "0"}
+                      >
+                        <div className="flex justify-between w-full items-center">
+                          <span>{chain.name}</span>
+                          <span className="text-gray-500 ml-auto pl-4">
+                            {balance.data ? `${balance.data.displayValue} ${balance.data.symbol}` : '0'}
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <Button
