@@ -3,13 +3,14 @@
 import Image from "next/image";
 import {
   Blobbie,
-  ConnectButton,
+  useWalletBalance,
   useActiveAccount,
   useConnectModal,
   useWalletDetailsModal,
+  useNetworkSwitcherModal,
 } from "thirdweb/react";
 import { client } from "./client";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CardHeader } from "@/components/ui/card";
 import { CardTitle } from "@/components/ui/card";
@@ -20,10 +21,33 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-const chain = defineChain({
-  id: 84532,
-});
+
+const chains = {
+  baseSepolia: defineChain({
+    id: 84532,
+    name: "Base Sepolia"
+  }),
+  optimismSepolia: defineChain({
+    id: 11155420,
+    name: "Optimism Sepolia"
+  }),
+  soneiumMinato: defineChain({
+    id: 1946,
+    name: "Soneium Minato"
+  }),
+  abstractTestnet: defineChain({
+    id: 11124,
+    name: "Abstract Testnet"
+  })
+};
 
 const theme = "dark";
 
@@ -36,16 +60,23 @@ export default function Home() {
   const [txUrl, setTxUrl] = useState<string | null>(null);
   const { connect, isConnecting } = useConnectModal();
   const detailsModal = useWalletDetailsModal();
+  const [selectedChain, setSelectedChain] = useState(chains.baseSepolia);
+  const networkSwitcher = useNetworkSwitcherModal();
+
+  const { data, isError } = useWalletBalance({
+    chain: selectedChain,
+    address: activeAccount?.address,
+    client,
+  });
+  console.log("balance", data?.displayValue, data?.symbol);
 
   async function handleConnect() {
     if (activeAccount) {
-      // If an account is already connected, open the wallet details modal
       detailsModal.open({ client });
     } else {
-      // If no account is connected, connect
       const wallet = await connect({
         client,
-        chain,
+        chain: selectedChain,
       });
       console.log("connected to", wallet);
     }
@@ -133,11 +164,61 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p>
-                  Send 0.001 Base Sepolia ETH to Engine backend wallet. Receive
+                  Send 0.001 ETH to Engine backend wallet. Receive
                   an NFT on Optimism Sepolia.
                 </p>
               </CardContent>
-              <CardContent>
+              <CardContent className="flex flex-col gap-4">
+                <Select
+                  value={selectedChain.id.toString()}
+                  onValueChange={(value) => {
+                    const chain = Object.values(chains).find(
+                      (c) => c.id === Number(value)
+                    );
+                    if (chain) {
+                      setSelectedChain(chain);
+                      if (activeAccount) {
+                        networkSwitcher.open({
+                          client,
+                          sections: [
+                            { 
+                              label: "Available Networks", 
+                              chains: Object.values(chains) 
+                            }
+                          ]
+                        });
+                      }
+                    }
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Chain" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(chains).map(([key, chain]) => {
+                      const { data: balance } = useWalletBalance({
+                        chain: chain,
+                        address: activeAccount?.address,
+                        client,
+                      });
+                      
+                      return (
+                        <SelectItem 
+                          key={chain.id} 
+                          value={chain.id.toString()}
+                          disabled={!balance || balance.displayValue === "0"}
+                        >
+                          <div className="flex justify-between w-full items-center">
+                            <span>{chain.name}</span>
+                            <span className="text-gray-500 ml-auto pl-4">
+                              {balance ? `${balance.displayValue} ${balance.symbol}` : '0'}
+                            </span>
+                          </div>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
                 <Button
                   variant="outline"
                   disabled={!activeAccount || isLoading}
@@ -146,7 +227,7 @@ export default function Home() {
                       setIsLoading(true);
                       const transaction = prepareTransaction({
                         to: "0x62ead6657dccA283Fb9f8111C820f4367CBAf2cF",
-                        chain: chain,
+                        chain: selectedChain,
                         value: toWei("0.001"),
                         client: client,
                       });
